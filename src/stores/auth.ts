@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import api from '@/api/api'
+import { decodeToken } from '@/helpers/jwt/decode'
 
 // Define el tipo para el estado
 interface User {
@@ -26,21 +28,18 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     // Acción para hacer login
-    async login(username: string, password: string) {
+    async login(form: { user: string; password: string }) {
       try {
-        const response = await axios.post('https://tu-backend.com/api/login', {
-          username,
-          password,
+        const response = await api.post('/api/token/', {
+          username: form.user,
+          password: form.password,
         })
-
-        if (response.data.token) {
-          // Almacenar el token y la información del usuario
-          this.token = response.data.token
-          this.user = response.data.user
-
+        if (response.data.access) {
+          const tokenDecode = decodeToken(response.data.access)
+          console.log(tokenDecode.user_id)
           // Guardar el token y el usuario en localStorage
-          localStorage.setItem('token', this.token)
-          localStorage.setItem('user', JSON.stringify(this.user))
+          localStorage.setItem('access', response.data.access)
+          localStorage.setItem('refresh', response.data.refresh)
 
           // Configurar el token para futuras peticiones con Axios
           axios.defaults.headers['Authorization'] = `Bearer ${this.token}`

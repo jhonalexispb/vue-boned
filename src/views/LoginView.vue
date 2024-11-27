@@ -3,12 +3,12 @@
     <div>
       <label for="user">Usuario</label>
       <br />
-      <input v-model="form.user" type="text" id="user" name="user" />
+      <input v-model="form.user" type="text" id="user" name="username" />
     </div>
     <div>
       <label for="pass">Contraseña</label>
       <br />
-      <input v-model="form.password" type="password" id="pass" name="pass" />
+      <input v-model="form.password" type="password" id="pass" name="password" />
     </div>
     <button>Login</button>
   </form>
