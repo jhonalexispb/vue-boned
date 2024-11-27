@@ -36,13 +36,10 @@ export const useAuthStore = defineStore('auth', {
         })
         if (response.data.access) {
           const tokenDecode = decodeToken(response.data.access)
-          console.log(tokenDecode.user_id)
           // Guardar el token y el usuario en localStorage
-          localStorage.setItem('access', response.data.access)
-          localStorage.setItem('refresh', response.data.refresh)
-
-          // Configurar el token para futuras peticiones con Axios
-          axios.defaults.headers['Authorization'] = `Bearer ${this.token}`
+          localStorage.setItem('access_token', response.data.access)
+          localStorage.setItem('refresh_token', response.data.refresh)
+          localStorage.setItem('usuario', tokenDecode.user_id)
         }
       } catch (error) {
         console.error('Error al hacer login:', error)
